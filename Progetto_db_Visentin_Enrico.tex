@@ -1,4 +1,4 @@
-\documentclass[a4paper]{report}
+\documentclass[12pt,a4paper]{report}
 
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
@@ -54,20 +54,25 @@
 \chapter{Introduzione}
 
 \section{Introduzione al problema}
-Il presente progetto riguarda la progettazione e lo sviluppo di un sistema informativo per la gestione di una piattaforma dedicata ai tornei sportivi multi-disciplina. L’obiettivo del sistema è quello di consentire la registrazione, l’organizzazione e l’analisi di competizioni sportive che coinvolgono diverse discipline, come calcio, basket, pallavolo e tennis.
 
-La piattaforma permette agli utenti di consultare informazioni relative a società sportive, squadre, giocatori, tornei e partite, fornendo inoltre statistiche dettagliate sulle prestazioni individuali e di squadra. Il sistema è pensato per supportare sia la gestione organizzativa dei tornei sia la fruizione dei dati da parte degli utenti finali interessati all’andamento delle competizioni.
+Si vuole realizzare una base di dati dedicata alla gestione di tornei calcistici. L'obiettivo principale della piattaforma è di suportare e monitorare le varie competizioni, consentendo la gestione delle squadre, partite, atleti, stadi e statistiche di gioco.\\
+Il sistema dovrà supportare la registrazione di società sportive, squadre, singoli atleti, partite e impianti sportivi, oltre a raccogliere le statistiche dettagliate relative alle prestazioni di squadra e del singolo atleta.\\
+Il sistema dovrà inoltre permettere la consultazione dei risultati, delle classifiche e delle prestazioni individuali dei giocatori durante le varie stagioni sportive.
+
 
 \section{Requisiti del problema}
-Il sistema deve essere in grado di gestire diverse entità principali, tra cui società sportive, squadre, giocatori, tornei e partite. Ogni società può possedere più squadre, mentre ogni squadra partecipa a uno o più tornei relativi a specifiche discipline sportive.
 
-Per ogni partita devono essere memorizzati i dati relativi alle squadre partecipanti, al punteggio finale, alla data di svolgimento e all’impianto sportivo in cui si è disputata. Inoltre, per ogni giocatore devono essere registrate le informazioni anagrafiche e le statistiche di prestazione relative alle singole partite, come minuti giocati, punti segnati, assist e falli.
-
-Il sistema deve inoltre consentire l’elaborazione di statistiche aggregate, come classifiche, migliori marcatori, prestazioni medie delle squadre e rendimento dei giocatori nei vari tornei.
+Il sistema deve essere in grado di gestire un insieme di società calcistiche, per le quali devono essere memorizzati un codice identificativo univoco, il nome, la data di fondazione, la città di appartenenza, l’indirizzo della sede principale, il numero di telefono, l’indirizzo email e il nome del presidente. Ogni società può possedere una o più squadre giovanili o professionistiche.\\
+Le squadre devono essere identificate tramite un codice univoco e devono essere memorizzate informazioni relative al nome della squadra, all’anno di fondazione, allo sponsor principale e alla società calcistica di riferimento. Ogni squadra partecipa a uno o più competizioni durante una stagione sportiva.\\
+Per ogni torneo devono essere memorizzati un identificativo, il nome della competizione, la stagione sportiva, il numero di squadre partecipanti, la data di inizio, la data di fine e il formato della competizione (campionato, ad eliminazione diretta o misto). Ogni torneo è organizzato da una federazione, della quale devono essere registrati nome, sede centrale, recapiti e presidente.\\
+Ogni partita deve essere identificata tramite un codice univoco e deve memorizzare data, orario, risultato finale, numero di spettatori e stato della partita (programmata, in corso, conclusa, sospesa o rinviata). Ogni partita coinvolge obbligatoriamente due squadre, una squadra di casa e una squadra ospite, e appartiene a un determinato torneo.\\
+Per ogni partita devono inoltre essere registrati gli arbitri designati. Essi sono identificati tramite codice univoco e devono possedere informazioni relative a nome, cognome, data di nascita e anni di esperienza. Per ogni partita deve esserci un arbitro principale, due guardalinee, un quarto uomo e un assistente VAR.\\
+Gli stadi devono essere registrati tramite nome, città, indirizzo, capienza massima, anno di costruzione e tipologia del terreno di gioco (sintetico o in erba). Ogni stadio può ospitare più partite nel tempo.\\
+Il sistema deve inoltre gestire i giocatori appartenenti alle squadre. Per ogni giocatore devono essere memorizzati codice identificativo, nome, cognome, nazionalità, data di nascita, altezza, peso, ruolo, numero di maglia, piede preferito, stipendio annuale, valore di mercato e data di ingresso nella squadra. Ogni giocatore appartiene a una sola squadra durante una stagione sportiva, ma il sistema deve mantenere lo storico dei trasferimenti tra squadre differenti.\\
+I giocatori devono essere distinti in portieri e giocatori di movimento. Per i portieri devono essere registrati il numero di parate effettuate, i clean sheet e i rigori parati, mentre per i giocatori di movimento devono essere registrati goal segnati e assist effettuati.\\
+Il sistema deve infine consentire l’elaborazione di statistiche quali la classifica marcatori, le squadre con il maggior numero di vittorie, i giocatori con più assist, gli stadi con maggiore affluenza media, le squadre con la miglior difesa e l’analisi dell’andamento delle prestazioni dei giocatori durante le stagioni sportive.
 	
-	\chapter{Analisi dei requisiti}
-	
-	\chapter{Progettazione concettuale (Schema E-R)}
+	\chapter{Diagramma Entity-Relationship}
 	
 	\chapter{Progettazione logica}
 	
