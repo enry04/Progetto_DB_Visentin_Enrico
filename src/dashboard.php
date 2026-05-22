@@ -5,17 +5,18 @@ $errors = [];
 $classVitt = [];
 $affluenza = [];
 $marcatori = [];
+$competizione = 'SERIE_A_26'; 
 
 try {
-    $stmt = $pdo->query('SELECT * FROM vistaclassificavittorie');
-    $classVitt = $stmt->fetchAll();
+    $stmt = $pdo->query('SELECT * FROM VistaClassificaVittorie');
+    $classVitt = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $errors[] = 'Vista classifiche vittorie: ' . $e->getMessage();
 }
 
 try {
-    $stmt = $pdo->query('SELECT * FROM vistaaffluenzamediastadi');
-    $affluenza = $stmt->fetchAll();
+    $stmt = $pdo->query('SELECT * FROM VistaAffluenzaMediaStadi');
+    $affluenza = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $errors[] = 'Vista affluenza media stadi: ' . $e->getMessage();
 }
@@ -23,8 +24,10 @@ try {
 $spName = 'getClassificaMarcatoriCompetizione';
 
 try {
-    $stmt = $pdo->query("CALL $spName('TOR26')");
-    $marcatori = $stmt->fetchAll();
+    $stmt = $pdo->prepare("CALL $spName(?)");
+    $stmt->execute([$competizione]);
+    $marcatori = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor(); 
 } catch (PDOException $e) {
     $errors[] = "Stored procedure $spName: " . $e->getMessage();
 }
@@ -35,7 +38,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistiche</title>
+    <title>Statistiche Tornei</title>
     <link rel="stylesheet" href="css/style.css">
     <meta name="robots" content="noindex">
 </head>
@@ -50,10 +53,10 @@ try {
 
         <?php if (!empty($errors)): ?>
             <section class="messages error-msg">
-                <h2>Avvisi</h2>
+                <h2>Avvisi di sistema</h2>
                 <ul>
                     <?php foreach ($errors as $error): ?>
-                        <li><?php echo $error; ?></li>
+                        <li><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></li>
                     <?php endforeach; ?>
                 </ul>
             </section>
@@ -62,12 +65,12 @@ try {
         <section class="grid">
             <article class="card">
                 <h2>Classifica Vittorie</h2>
-                <?php if ($classVitt): ?>
+                <?php if (!empty($classVitt)): ?>
                     <table>
                         <thead>
                             <tr>
                                 <?php foreach (array_keys($classVitt[0]) as $col): ?>
-                                    <th><?php echo $col; ?></th>
+                                    <th><?php echo htmlspecialchars(ucfirst($col), ENT_QUOTES, 'UTF-8'); ?></th>
                                 <?php endforeach; ?>
                             </tr>
                         </thead>
@@ -75,7 +78,7 @@ try {
                             <?php foreach ($classVitt as $row): ?>
                                 <tr>
                                     <?php foreach ($row as $cell): ?>
-                                        <td><?php echo (string)$cell; ?></td>
+                                        <td><?php echo htmlspecialchars((string)$cell, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -88,12 +91,12 @@ try {
 
             <article class="card">
                 <h2>Affluenza media stadi</h2>
-                <?php if ($affluenza): ?>
+                <?php if (!empty($affluenza)): ?>
                     <table>
                         <thead>
                             <tr>
                                 <?php foreach (array_keys($affluenza[0]) as $col): ?>
-                                    <th><?php echo $col; ?></th>
+                                    <th><?php echo htmlspecialchars(ucfirst($col), ENT_QUOTES, 'UTF-8'); ?></th>
                                 <?php endforeach; ?>
                             </tr>
                         </thead>
@@ -101,7 +104,7 @@ try {
                             <?php foreach ($affluenza as $row): ?>
                                 <tr>
                                     <?php foreach ($row as $cell): ?>
-                                        <td><?php echo (string)$cell; ?></td>
+                                        <td><?php echo is_numeric($cell) && strpos($cell, '.') !== false ? htmlspecialchars(number_format($cell, 1), ENT_QUOTES, 'UTF-8') : htmlspecialchars((string)$cell, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -113,13 +116,13 @@ try {
             </article>
 
             <article class="card wide">
-                <h2>Classifica marcatori</h2>
-                <?php if ($marcatori): ?>
+                <h2>Classifica marcatori <?php echo htmlspecialchars($competizione, ENT_QUOTES, 'UTF-8'); ?></h2>
+                <?php if (!empty($marcatori)): ?>
                     <table>
                         <thead>
                             <tr>
                                 <?php foreach (array_keys($marcatori[0]) as $col): ?>
-                                    <th><?php echo $col; ?></th>
+                                    <th><?php echo htmlspecialchars(ucfirst($col), ENT_QUOTES, 'UTF-8'); ?></th>
                                 <?php endforeach; ?>
                             </tr>
                         </thead>
@@ -127,14 +130,14 @@ try {
                             <?php foreach ($marcatori as $row): ?>
                                 <tr>
                                     <?php foreach ($row as $cell): ?>
-                                        <td><?php echo (string)$cell; ?></td>
+                                        <td><?php echo htmlspecialchars((string)$cell, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <p class="muted">Nessun dato disponibile dalla stored procedure.</p>
+                    <p class="muted">Nessun dato disponibile per questa competizione.</p>
                 <?php endif; ?>
             </article>
         </section>

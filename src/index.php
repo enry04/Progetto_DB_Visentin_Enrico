@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($action === 'assign_arbitri') {
-            $stmt = $pdo->prepare('CALL inserisci_sestetto_arbitrale(?, ?, ?, ?, ?, ?)');
+            $stmt = $pdo->prepare('CALL inserisci_quintetto_arbitrale(?, ?, ?, ?, ?, ?)');
             $stmt->execute([
                 postValue('codicePartita'),
                 postValue('codiceArbitro'),
@@ -23,24 +23,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 postValue('codiceQuartoUomo'),
                 postValue('codiceAssistenteVAR'),
             ]);
-            $success[] = 'Sestetto arbitrale assegnato con successo.';
+            $success[] = 'Quintetto arbitrale assegnato con successo.';
         } elseif ($action === 'insert_contratto') {
-            $stmt = $pdo->prepare('INSERT INTO Contratto (numeroTesseramentoGiocatore, codiceClub, numeroMaglia, dataInizio, dataFine) VALUES (?, ?, ?, ?, ?)');
+            $stmt = $pdo->prepare('INSERT INTO Contratto (numeroTesseramentoGiocatore, codiceClub, numeroMaglia, stipendio, dataInizio, dataFine) VALUES (?, ?, ?, ?, ?, ?)');
             $stmt->execute([
                 postValue('numeroTesseramentoGiocatore'),
                 postValue('codiceClub'),
                 postValue('numeroMaglia'),
+                postValue('stipendio'),
                 postValue('dataInizio'),
                 postValue('dataFine'),
             ]);
             $success[] = 'Contratto inserito con successo.';
         } elseif ($action === 'update_spettatori') {
-            $stmt = $pdo->prepare('UPDATE Partita SET numeroSpettatori = ? WHERE codiceGara = ?');
-            $stmt->execute([
-                postValue('numeroSpettatori'),
+            // Controllo se esiste la partita
+            $checkStmt = $pdo->prepare('SELECT COUNT(*) FROM Partita WHERE codiceGara = ?');
+            $checkStmt->execute([
                 postValue('codiceGaraSpettatori'),
             ]);
-            $success[] = 'Numero spettatori aggiornato per la partita.';
+            $exists = $checkStmt->fetchColumn();
+            if ($exists) {
+                $stmt = $pdo->prepare('UPDATE Partita SET numeroSpettatori = ? WHERE codiceGara = ?');
+                $stmt->execute([
+                    postValue('numeroSpettatori'),
+                    postValue('codiceGaraSpettatori'),
+                ]);
+                $success[] = 'Numero spettatori aggiornato per la partita.';
+            } else {
+                $errors[] = 'Codice partita non trovato';
+            }
         } elseif ($action === 'insert_prestazione') {
             $stmt = $pdo->prepare('INSERT INTO Prestazione (numeroTesseramentoGiocatore, codiceGara, gol, assist, cartelliniGialli, cartelliniRossi) VALUES (?, ?, ?, ?, ?, ?)');
             $stmt->execute([
@@ -49,17 +60,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 postValue('gol'),
                 postValue('assist'),
                 postValue('cartelliniGialli'),
-                postValue('cartelliniRossi'),
+                postValue('cartelliniRossi'), 
             ]);
             $success[] = 'Prestazione inserita con successo.';
         } elseif ($action === 'update_risultato') {
-            $stmt = $pdo->prepare('UPDATE Partita SET stato = ?, risultato = ? WHERE codiceGara = ?');
-            $stmt->execute([
-                postValue('statoPartita'),
-                postValue('risultatoPartita'),
+            
+            $checkStmt = $pdo->prepare('SELECT COUNT(*) FROM Partita WHERE codiceGara = ?');
+            $checkStmt->execute([
                 postValue('codiceGaraRisultato'),
             ]);
-            $success[] = 'Stato e risultato partita aggiornati con successo.';
+            $exists = $checkStmt->fetchColumn();
+            if ($exists) {
+                $stmt = $pdo->prepare('UPDATE Partita SET stato = ?, risultato = ? WHERE codiceGara = ?');
+                $stmt->execute([
+                    postValue('statoPartita'),
+                    postValue('risultatoPartita'),
+                    postValue('codiceGaraRisultato'),
+                ]);
+                $success[] = 'Stato e risultato partita aggiornati con successo.';
+            } else {
+                $errors[] = 'Codice partita non trovato';
+            }
         }
     } catch (PDOException $e) {
         $errors[] = $e->getMessage();
@@ -90,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2>Errore</h2>
                 <ul>
                     <?php foreach ($errors as $error): ?>
-                        <li><?php echo $error; ?></li>
+                        <li><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></li>
                     <?php endforeach; ?>
                 </ul>
             </section>
@@ -101,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2>Operazione completata</h2>
                 <ul>
                     <?php foreach ($success as $msg): ?>
-                        <li><?php echo $msg; ?></li>
+                        <li><?php echo htmlspecialchars($msg, ENT_QUOTES, 'UTF-8'); ?></li>
                     <?php endforeach; ?>
                 </ul>
             </section>
@@ -124,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="field"><label>Assistente VAR<input type="text" name="codiceAssistenteVAR"
                                 required></label></div>
-                    <button class="btn" type="submit">Assegna sestetto</button>
+                    <button class="btn" type="submit">Assegna quintetto</button>
                 </form>
             </article>
 
@@ -136,6 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 name="numeroTesseramentoGiocatore" required></label></div>
                     <div class="field"><label>Codice club<input type="text" name="codiceClub" required></label></div>
                     <div class="field"><label>Numero maglia<input type="number" name="numeroMaglia" min="1"
+                                required></label></div>
+                    <div class="field"><label>Stipendio annuale (€)<input type="number" name="stipendio" step="0.01" min="0"
                                 required></label></div>
                     <div class="field"><label>Data inizio<input type="date" name="dataInizio" required></label></div>
                     <div class="field"><label>Data fine<input type="date" name="dataFine" required></label></div>
@@ -163,14 +186,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 name="numeroTesseramentoGiocatorePrestazione" required></label></div>
                     <div class="field"><label>Codice partita<input type="text" name="codiceGaraPrestazione"
                                 required></label></div>
-                    <div class="field"><label>Gol<input type="number" name="gol" min="0" required></label></div>
-                    <div class="field"><label>Assist<input type="number" name="assist" min="0" required></label></div>
-                    <div class="field"><label>Cartellini gialli<input type="number" name="cartelliniGialli" min="0"
+                    <div class="field"><label>Gol<input type="number" name="gol" min="0" value="0" required></label>
+                    </div>
+                    <div class="field"><label>Assist<input type="number" name="assist" min="0" value="0"
                                 required></label></div>
+                    <div class="field"><label>Cartellini gialli<input type="number" name="cartelliniGialli" min="0"
+                                max="2" value="0" required></label></div>
                     <div class="field"><label>Cartellino rosso<select name="cartelliniRossi" required>
-                                <option value="No">No</option>
-                                <option value="Doppio giallo">Doppio giallo</option>
-                                <option value="Rosso diretto">Rosso diretto</option>
+                                <option value="0">No</option>
+                                <option value="1">Sì (Diretto o doppio giallo)</option>
                             </select></label></div>
                     <button class="btn" type="submit">Inserisci prestazione</button>
                 </form>
