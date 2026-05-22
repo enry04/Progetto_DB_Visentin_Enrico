@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2>Errore</h2>
                 <ul>
                     <?php foreach ($errors as $error): ?>
-                        <li><?php echo htmlspecialchars($error); ?></li>
+                        <li><?php echo $error; ?></li>
                     <?php endforeach; ?>
                 </ul>
             </section>
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2>Operazione completata</h2>
                 <ul>
                     <?php foreach ($success as $msg): ?>
-                        <li><?php echo htmlspecialchars($msg); ?></li>
+                        <li><?php echo $msg; ?></li>
                     <?php endforeach; ?>
                 </ul>
             </section>

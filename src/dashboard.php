@@ -53,7 +53,7 @@ try {
                 <h2>Avvisi</h2>
                 <ul>
                     <?php foreach ($errors as $error): ?>
-                        <li><?php echo htmlspecialchars($error); ?></li>
+                        <li><?php echo $error; ?></li>
                     <?php endforeach; ?>
                 </ul>
             </section>
@@ -67,7 +67,7 @@ try {
                         <thead>
                             <tr>
                                 <?php foreach (array_keys($classVitt[0]) as $col): ?>
-                                    <th><?php echo htmlspecialchars($col); ?></th>
+                                    <th><?php echo $col; ?></th>
                                 <?php endforeach; ?>
                             </tr>
                         </thead>
@@ -75,7 +75,7 @@ try {
                             <?php foreach ($classVitt as $row): ?>
                                 <tr>
                                     <?php foreach ($row as $cell): ?>
-                                        <td><?php echo htmlspecialchars((string)$cell); ?></td>
+                                        <td><?php echo (string)$cell; ?></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -93,7 +93,7 @@ try {
                         <thead>
                             <tr>
                                 <?php foreach (array_keys($affluenza[0]) as $col): ?>
-                                    <th><?php echo htmlspecialchars($col); ?></th>
+                                    <th><?php echo $col; ?></th>
                                 <?php endforeach; ?>
                             </tr>
                         </thead>
@@ -101,7 +101,7 @@ try {
                             <?php foreach ($affluenza as $row): ?>
                                 <tr>
                                     <?php foreach ($row as $cell): ?>
-                                        <td><?php echo htmlspecialchars((string)$cell); ?></td>
+                                        <td><?php echo (string)$cell; ?></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -119,7 +119,7 @@ try {
                         <thead>
                             <tr>
                                 <?php foreach (array_keys($marcatori[0]) as $col): ?>
-                                    <th><?php echo htmlspecialchars($col); ?></th>
+                                    <th><?php echo $col; ?></th>
                                 <?php endforeach; ?>
                             </tr>
                         </thead>
@@ -127,7 +127,7 @@ try {
                             <?php foreach ($marcatori as $row): ?>
                                 <tr>
                                     <?php foreach ($row as $cell): ?>
-                                        <td><?php echo htmlspecialchars((string)$cell); ?></td>
+                                        <td><?php echo (string)$cell; ?></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
