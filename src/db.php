@@ -1,6 +1,4 @@
 <?php
-// src/db.php
-// PDO connection to MySQL database `torneicalcistici` on localhost
 $host = '127.0.0.1';
 $db   = 'torneicalcistici';
 $user = 'root';
