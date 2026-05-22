@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Creato il: Mag 21, 2026 alle 18:44
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Host: localhost
+-- Creato il: Mag 22, 2026 alle 16:34
+-- Versione del server: 10.4.27-MariaDB
+-- Versione PHP: 8.0.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,7 +34,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getClassificaMarcatoriCompetizione`
 	HAVING golSegnati > 0 ORDER BY golSegnati DESC;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `inserisci_sestetto_arbitrale` (IN `codicePartita` VARCHAR(50), IN `codiceArbitro` VARCHAR(50), IN `codicePrimoGuardalinee` VARCHAR(50), IN `codiceSecondoGuardalinee` VARCHAR(50), IN `codiceQuartoUomo` VARCHAR(50), IN `codiceAssistenteVAR` VARCHAR(50))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `inserisci_quintetto_arbitrale` (IN `codicePartita` VARCHAR(50), IN `codiceArbitro` VARCHAR(50), IN `codicePrimoGuardalinee` VARCHAR(50), IN `codiceSecondoGuardalinee` VARCHAR(50), IN `codiceQuartoUomo` VARCHAR(50), IN `codiceAssistenteVAR` VARCHAR(50))   BEGIN
 	IF (codiceArbitro = codicePrimoGuardalinee OR 
 		codiceArbitro = codiceSecondoGuardalinee OR 
 		codiceArbitro = codiceQuartoUomo OR 
@@ -66,10 +66,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `arbitro`
+-- Struttura della tabella `Arbitro`
 --
 
-CREATE TABLE `arbitro` (
+CREATE TABLE `Arbitro` (
   `numeroTesserinoArbitrale` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `cognome` varchar(50) NOT NULL,
@@ -80,25 +80,25 @@ CREATE TABLE `arbitro` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `arbitro`
+-- Dump dei dati per la tabella `Arbitro`
 --
 
-INSERT INTO `arbitro` (`numeroTesserinoArbitrale`, `nome`, `cognome`, `dataDiNascita`, `sezione`, `anniEsperienza`, `livello`) VALUES
-('ARB01', 'Daniele', 'Orsato', '1975-11-23', 'Schio', 20, 'Internazionale'),
-('ARB02', 'Fabio', 'Maresca', '1981-04-12', 'Napoli', 12, 'A e B'),
-('ARB03', 'Elena', 'Tambini', '1988-01-01', 'Como', 8, 'A e B'),
-('ARB04', 'Luca', 'Pairetto', '1984-04-14', 'Nichelino', 10, 'A e B'),
-('ARB05', 'Paolo', 'Valeri', '1978-05-16', 'Roma 2', 15, 'Internazionale'),
-('ARB06', 'Gianluca', 'Rocchi', '1973-08-25', 'Firenze', 18, 'Internazionale'),
-('ARB07', 'Davide', 'Massa', '1981-07-15', 'Imperia', 11, 'A e B');
+INSERT INTO `Arbitro` (`numeroTesserinoArbitrale`, `nome`, `cognome`, `dataDiNascita`, `sezione`, `anniEsperienza`, `livello`) VALUES
+('A_001', 'Daniele', 'Orsato', '1975-11-23', 'Schio', 20, 'Internazionale'),
+('A_002', 'Fabio', 'Maresca', '1981-04-12', 'Napoli', 12, 'Nazionale'),
+('A_003', 'Simone', 'Sozza', '1987-08-19', 'Seregno', 6, 'Nazionale'),
+('A_004', 'Massimiliano', 'Irrati', '1979-06-27', 'Pistoia', 15, 'Internazionale VMO'),
+('A_005', 'Davide', 'Massa', '1981-07-15', 'Imperia', 13, 'Internazionale'),
+('A_006', 'Marco', 'Guida', '1981-06-07', 'Torre Annunziata', 14, 'Internazionale'),
+('A_007', 'Alessandro', 'Prontera', '1986-09-15', 'Bologna', 5, 'Nazionale');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `contratto`
+-- Struttura della tabella `Contratto`
 --
 
-CREATE TABLE `contratto` (
+CREATE TABLE `Contratto` (
   `idContratto` int(11) NOT NULL,
   `numeroTesseramentoGiocatore` varchar(50) NOT NULL,
   `codiceClub` varchar(50) NOT NULL,
@@ -106,33 +106,35 @@ CREATE TABLE `contratto` (
   `dataFine` date NOT NULL,
   `stipendio` decimal(10,2) NOT NULL,
   `numeroMaglia` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
--- Dump dei dati per la tabella `contratto`
+-- Dump dei dati per la tabella `Contratto`
 --
 
-INSERT INTO `contratto` (`idContratto`, `numeroTesseramentoGiocatore`, `codiceClub`, `dataInizio`, `dataFine`, `stipendio`, `numeroMaglia`) VALUES
-(1, 'GIO10', 'SQ01', '2025-07-01', '2026-06-30', 9000000.00, 10),
-(2, 'GIO11', 'SQ02', '2025-07-01', '2026-06-30', 7000000.00, 10),
-(3, 'GIO12', 'SQ03', '2025-07-01', '2026-06-30', 8000000.00, 9);
+INSERT INTO `Contratto` (`idContratto`, `numeroTesseramentoGiocatore`, `codiceClub`, `dataInizio`, `dataFine`, `stipendio`, `numeroMaglia`) VALUES
+(1, 'G_001', 'INTER', '2023-07-01', '2028-06-30', '9000000.00', 10),
+(2, 'G_004', 'INTER', '2022-07-01', '2027-06-30', '6500000.00', 23),
+(3, 'G_002', 'MILAN', '2024-07-01', '2028-06-30', '7000000.00', 10),
+(4, 'G_003', 'JUVENTUS', '2022-01-01', '2026-06-30', '12000000.00', 9),
+(5, 'G_004', 'MILAN', '2006-02-01', '2009-07-09', '134343.00', 22);
 
 --
--- Trigger `contratto`
+-- Trigger `Contratto`
 --
 DELIMITER $$
-CREATE TRIGGER `before_insert_contratto` BEFORE INSERT ON `contratto` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_insert_contratto` BEFORE INSERT ON `Contratto` FOR EACH ROW BEGIN
 	DECLARE conflitti INT;			
 	SELECT COUNT(*) INTO conflitti FROM contratto c
 	WHERE NEW.numeroTesseramentoGiocatore = c.numeroTesseramentoGiocatore AND NEW.dataInizio <= c.dataFine  AND NEW.dataFine >= c.dataInizio;			
 	IF conflitti > 0 THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore: Giocatore gia presente in un contratto con un altra squadra';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore: Il giocatore non può avere due contratti attivi contemporaneamente';
 	END IF;			
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `before_insert_numero_maglia` BEFORE INSERT ON `contratto` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_insert_numero_maglia` BEFORE INSERT ON `Contratto` FOR EACH ROW BEGIN
 	DECLARE conflitti INT;	
 	SELECT COUNT(*) INTO conflitti FROM Contratto c WHERE NEW.numeroMaglia = c.numeroMaglia AND NEW.codiceClub = c.codiceClub AND NEW.dataInizio <= c.dataFine AND NEW.dataFine >= c.dataInizio;	
 	IF conflitti > 0 THEN
@@ -145,10 +147,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `designazione`
+-- Struttura della tabella `Designazione`
 --
 
-CREATE TABLE `designazione` (
+CREATE TABLE `Designazione` (
   `idDesignazione` int(11) NOT NULL,
   `numeroTesserinoArbitrale` varchar(50) NOT NULL,
   `codiceGara` varchar(50) NOT NULL,
@@ -156,32 +158,29 @@ CREATE TABLE `designazione` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `designazione`
+-- Dump dei dati per la tabella `Designazione`
 --
 
-INSERT INTO `designazione` (`idDesignazione`, `numeroTesserinoArbitrale`, `codiceGara`, `ruolo`) VALUES
-(1, 'ARB01', 'MATCH01', 'arbitro principale'),
-(2, 'ARB02', 'MATCH01', 'guardalinee'),
-(3, 'ARB03', 'MATCH01', 'guardalinee'),
-(4, 'ARB04', 'MATCH01', 'quarto uomo'),
-(5, 'ARB05', 'MATCH02', 'arbitro principale'),
-(6, 'ARB06', 'MATCH02', 'guardalinee'),
-(7, 'ARB07', 'MATCH02', 'guardalinee'),
-(8, 'ARB01', 'MATCH03', 'arbitro principale'),
-(9, 'ARB02', 'MATCH03', 'guardalinee'),
-(10, 'ARB03', 'MATCH04', 'arbitro principale'),
-(11, 'ARB04', 'MATCH04', 'guardalinee'),
-(14, 'ARB01', 'MATCH05', 'arbitro principale'),
-(15, 'ARB02', 'MATCH05', 'guardalinee'),
-(16, 'ARB03', 'MATCH05', 'guardalinee'),
-(17, 'ARB04', 'MATCH05', 'quarto uomo'),
-(18, 'ARB05', 'MATCH05', 'assistente VAR');
+INSERT INTO `Designazione` (`idDesignazione`, `numeroTesserinoArbitrale`, `codiceGara`, `ruolo`) VALUES
+(1, 'A_005', 'GARA_002', 'arbitro principale'),
+(2, 'A_006', 'GARA_002', 'guardalinee'),
+(3, 'A_007', 'GARA_002', 'guardalinee'),
+(4, 'A_002', 'GARA_002', 'quarto uomo'),
+(5, 'A_004', 'GARA_002', 'assistente VAR'),
+(6, 'A_006', 'GARA_003', 'guardalinee'),
+(7, 'A_007', 'GARA_003', 'guardalinee'),
+(8, 'A_004', 'GARA_003', 'quarto uomo'),
+(9, 'A_001', 'GARA_001', 'arbitro principale'),
+(10, 'A_002', 'GARA_001', 'guardalinee'),
+(11, 'A_003', 'GARA_001', 'guardalinee'),
+(12, 'A_004', 'GARA_001', 'quarto uomo'),
+(13, 'A_005', 'GARA_001', 'assistente VAR');
 
 --
--- Trigger `designazione`
+-- Trigger `Designazione`
 --
 DELIMITER $$
-CREATE TRIGGER `before_insert_designazione` BEFORE INSERT ON `designazione` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_insert_designazione` BEFORE INSERT ON `Designazione` FOR EACH ROW BEGIN
 	DECLARE conflitti INT;
 	DECLARE dataNuovaGara DATE;
 	SELECT data INTO dataNuovaGara FROM Partita 
@@ -199,10 +198,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `giocatore`
+-- Struttura della tabella `Giocatore`
 --
 
-CREATE TABLE `giocatore` (
+CREATE TABLE `Giocatore` (
   `numeroTesseramentoGiocatore` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `cognome` varchar(50) NOT NULL,
@@ -214,41 +213,43 @@ CREATE TABLE `giocatore` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `giocatore`
+-- Dump dei dati per la tabella `Giocatore`
 --
 
-INSERT INTO `giocatore` (`numeroTesseramentoGiocatore`, `nome`, `cognome`, `nazionalita`, `dataDiNascita`, `altezza`, `peso`, `ruolo`) VALUES
-('GIO10', 'Lautaro', 'Martinez', 'Argentina', '1997-08-22', 174, 72, 'Attaccante'),
-('GIO11', 'Rafael', 'Leao', 'Portogallo', '1999-06-10', 188, 81, 'Attaccante'),
-('GIO12', 'Dusan', 'Vlahovic', 'Serbia', '2000-01-28', 190, 88, 'Attaccante');
+INSERT INTO `Giocatore` (`numeroTesseramentoGiocatore`, `nome`, `cognome`, `nazionalita`, `dataDiNascita`, `altezza`, `peso`, `ruolo`) VALUES
+('G_001', 'Lautaro', 'Martinez', 'Argentina', '1997-08-22', 174, 72, 'Attaccante'),
+('G_002', 'Rafael', 'Leao', 'Portogallo', '1999-06-10', 188, 81, 'Attaccante'),
+('G_003', 'Dusan', 'Vlahovic', 'Serbia', '2000-01-28', 190, 78, 'Attaccante'),
+('G_004', 'Nicolo', 'Barella', 'Italia', '1997-02-07', 172, 68, 'Centrocampista');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `partecipazione`
+-- Struttura della tabella `Partecipazione`
 --
 
-CREATE TABLE `partecipazione` (
+CREATE TABLE `Partecipazione` (
   `codiceClub` varchar(50) NOT NULL,
   `codiceCompetizione` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `partecipazione`
+-- Dump dei dati per la tabella `Partecipazione`
 --
 
-INSERT INTO `partecipazione` (`codiceClub`, `codiceCompetizione`) VALUES
-('SQ01', 'TOR26'),
-('SQ02', 'TOR26'),
-('SQ03', 'TOR26');
+INSERT INTO `Partecipazione` (`codiceClub`, `codiceCompetizione`) VALUES
+('FIORENTINA', 'SERIE_A_26'),
+('INTER', 'SERIE_A_26'),
+('JUVENTUS', 'SERIE_A_26'),
+('MILAN', 'SERIE_A_26');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `partita`
+-- Struttura della tabella `Partita`
 --
 
-CREATE TABLE `partita` (
+CREATE TABLE `Partita` (
   `codiceGara` varchar(50) NOT NULL,
   `data` date NOT NULL,
   `orario` time NOT NULL,
@@ -262,22 +263,19 @@ CREATE TABLE `partita` (
 ) ;
 
 --
--- Dump dei dati per la tabella `partita`
+-- Dump dei dati per la tabella `Partita`
 --
 
-INSERT INTO `partita` (`codiceGara`, `data`, `orario`, `risultato`, `numeroSpettatori`, `stato`, `codiceCompetizione`, `codiceSquadraCasa`, `codiceSquadraTrasferta`, `codiceImpianto`) VALUES
-('MATCH01', '2026-05-24', '20:45:00', NULL, 75000, 'programmata', 'TOR26', 'SQ01', 'SQ02', 'ST01'),
-('MATCH02', '2026-05-24', '15:00:00', NULL, 40000, 'programmata', 'TOR26', 'SQ03', 'SQ01', 'ST02'),
-('MATCH03', '2026-05-28', '20:45:00', '1-2', 68000, 'conclusa', 'TOR26', 'SQ02', 'SQ03', 'ST01'),
-('MATCH04', '2026-05-31', '18:00:00', '0-2', 41000, 'conclusa', 'TOR26', 'SQ03', 'SQ01', 'ST02'),
-('MATCH05', '2026-06-05', '20:45:00', NULL, NULL, 'programmata', 'TOR26', 'SQ01', 'SQ03', 'ST01'),
-('MATCH06', '2026-06-12', '18:00:00', '0-0', NULL, 'conclusa', 'TOR26', 'SQ02', 'SQ01', 'ST01');
+INSERT INTO `Partita` (`codiceGara`, `data`, `orario`, `risultato`, `numeroSpettatori`, `stato`, `codiceCompetizione`, `codiceSquadraCasa`, `codiceSquadraTrasferta`, `codiceImpianto`) VALUES
+('GARA_001', '2026-05-10', '20:45:00', '2-0', 72000, 'conclusa', 'SERIE_A_26', 'INTER', 'MILAN', 'STADIO_MI'),
+('GARA_002', '2026-05-17', '18:00:00', '0-0', 40000, 'conclusa', 'SERIE_A_26', 'JUVENTUS', 'INTER', 'STADIO_TO'),
+('GARA_003', '2026-05-24', '15:00:00', '0-2', 32000, 'conclusa', 'SERIE_A_26', 'FIORENTINA', 'JUVENTUS', 'STADIO_FI');
 
 --
--- Trigger `partita`
+-- Trigger `Partita`
 --
 DELIMITER $$
-CREATE TRIGGER `before_insert_numero_spettatori` BEFORE INSERT ON `partita` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_insert_numero_spettatori` BEFORE INSERT ON `Partita` FOR EACH ROW BEGIN
 	DECLARE capienzaMassimaStadio INT;	
 	IF NEW.numeroSpettatori IS NOT NULL THEN		
 		SELECT capienzaMassima INTO capienzaMassimaStadio FROM Stadio s 
@@ -290,7 +288,7 @@ END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `before_update_numero_spettatori` BEFORE UPDATE ON `partita` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_update_numero_spettatori` BEFORE UPDATE ON `Partita` FOR EACH ROW BEGIN
 	DECLARE capienzaMassimaStadio INT;	
 	SELECT capienzaMassima INTO capienzaMassimaStadio FROM Stadio s 
 	WHERE NEW.codiceImpianto = s.codiceImpianto;	
@@ -301,7 +299,7 @@ END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `before_update_risultato_partita` BEFORE UPDATE ON `partita` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_update_risultato_partita` BEFORE UPDATE ON `Partita` FOR EACH ROW BEGIN
 	DECLARE golCasa INT DEFAULT 0;
 	DECLARE golTrasferta INT DEFAULT 0;
 	IF (NEW.risultato IS NOT NULL AND (OLD.risultato IS NULL OR NEW.risultato <> OLD.risultato)) THEN
@@ -329,10 +327,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `prestazione`
+-- Struttura della tabella `Prestazione`
 --
 
-CREATE TABLE `prestazione` (
+CREATE TABLE `Prestazione` (
   `idPrestazione` int(11) NOT NULL,
   `numeroTesseramentoGiocatore` varchar(50) NOT NULL,
   `codiceGara` varchar(50) NOT NULL,
@@ -343,22 +341,21 @@ CREATE TABLE `prestazione` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `prestazione`
+-- Dump dei dati per la tabella `Prestazione`
 --
 
-INSERT INTO `prestazione` (`idPrestazione`, `numeroTesseramentoGiocatore`, `codiceGara`, `gol`, `assist`, `cartelliniGialli`, `cartelliniRossi`) VALUES
-(1, 'GIO10', 'MATCH01', 2, 0, 0, 0),
-(2, 'GIO11', 'MATCH01', 1, 1, 0, 0),
-(3, 'GIO12', 'MATCH02', 1, 0, 1, 0),
-(4, 'GIO11', 'MATCH03', 1, 0, 0, 0),
-(5, 'GIO12', 'MATCH03', 2, 0, 1, 0),
-(6, 'GIO10', 'MATCH04', 2, 0, 0, 0);
+INSERT INTO `Prestazione` (`idPrestazione`, `numeroTesseramentoGiocatore`, `codiceGara`, `gol`, `assist`, `cartelliniGialli`, `cartelliniRossi`) VALUES
+(1, 'G_003', 'GARA_003', 2, 1, 0, 0),
+(2, 'G_004', 'GARA_003', 0, 0, 0, 0),
+(3, 'G_002', 'GARA_002', 0, 0, 1, 0),
+(4, 'G_004', 'GARA_002', 0, 0, 0, 0),
+(6, 'G_001', 'GARA_001', 2, 0, 0, 0);
 
 --
--- Trigger `prestazione`
+-- Trigger `Prestazione`
 --
 DELIMITER $$
-CREATE TRIGGER `before_insert_prestazione` BEFORE INSERT ON `prestazione` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_insert_prestazione` BEFORE INSERT ON `Prestazione` FOR EACH ROW BEGIN
 	DECLARE conflitti INT;
 	DECLARE dataNuovaGara DATE;		
 	SELECT data INTO dataNuovaGara FROM Partita 
@@ -367,7 +364,7 @@ CREATE TRIGGER `before_insert_prestazione` BEFORE INSERT ON `prestazione` FOR EA
 	INNER JOIN Partita m ON p.codiceGara = m.codiceGara
 	WHERE p.numeroTesseramentoGiocatore = NEW.numeroTesseramentoGiocatore AND m.data = dataNuovaGara;	
 	IF conflitti > 0 THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore: Giocatore gia partecipe ad una partita che si svolge nella stessa giornata';
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore: Il giocatore non puo partecipare a due partite che si disputano nella stessa giornata';
 	END IF;	
 END
 $$
@@ -376,10 +373,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `societa`
+-- Struttura della tabella `Societa`
 --
 
-CREATE TABLE `societa` (
+CREATE TABLE `Societa` (
   `codiceFederale` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `dataFondazione` date NOT NULL,
@@ -389,21 +386,22 @@ CREATE TABLE `societa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `societa`
+-- Dump dei dati per la tabella `Societa`
 --
 
-INSERT INTO `societa` (`codiceFederale`, `nome`, `dataFondazione`, `numeroTelefono`, `email`, `cognomePresidente`) VALUES
-('SOC01', 'F.C. Internazionale', '1908-03-09', '021234567', 'info@inter.it', 'Marotta'),
-('SOC02', 'Milan A.C.', '1899-12-16', '027654321', 'info@milan.it', 'Scaroni'),
-('SOC03', 'Juventus F.C.', '1897-11-01', '011987654', 'info@juventus.it', 'Ferrero');
+INSERT INTO `Societa` (`codiceFederale`, `nome`, `dataFondazione`, `numeroTelefono`, `email`, `cognomePresidente`) VALUES
+('00470470014', 'Juventus Football Club S.p.A.', '1897-11-01', '011987654', 'info@juventus.com', 'Ferrero'),
+('00793430158', 'Associazione Calcio Milan S.p.A.', '1899-12-16', '027654321', 'info@acmilan.com', 'Scaroni'),
+('01234560151', 'Inter Football Club S.p.A.', '1908-03-09', '021234567', 'info@inter.it', 'Marotta'),
+('01452410486', 'ACF Fiorentina S.r.l.', '1926-08-29', '055543210', 'info@acffiorentina.it', 'Commisso');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `squadra`
+-- Struttura della tabella `Squadra`
 --
 
-CREATE TABLE `squadra` (
+CREATE TABLE `Squadra` (
   `codiceClub` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `annoFondazione` int(11) DEFAULT NULL,
@@ -412,21 +410,22 @@ CREATE TABLE `squadra` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `squadra`
+-- Dump dei dati per la tabella `Squadra`
 --
 
-INSERT INTO `squadra` (`codiceClub`, `nome`, `annoFondazione`, `tipologia`, `codiceSocieta`) VALUES
-('SQ01', 'Inter Prima Squadra', 1908, 'Professionistica', 'SOC01'),
-('SQ02', 'Milan Prima Squadra', 1899, 'Professionistica', 'SOC02'),
-('SQ03', 'Juventus Prima Squadra', 1897, 'Professionistica', 'SOC03');
+INSERT INTO `Squadra` (`codiceClub`, `nome`, `annoFondazione`, `tipologia`, `codiceSocieta`) VALUES
+('FIORENTINA', 'Fiorentina', 1926, 'Professionistica', '01452410486'),
+('INTER', 'Inter', 1908, 'Professionistica', '01234560151'),
+('JUVENTUS', 'Juventus', 1897, 'Professionistica', '00470470014'),
+('MILAN', 'Milan', 1899, 'Professionistica', '00793430158');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `stadio`
+-- Struttura della tabella `Stadio`
 --
 
-CREATE TABLE `stadio` (
+CREATE TABLE `Stadio` (
   `codiceImpianto` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `citta` varchar(50) NOT NULL,
@@ -439,20 +438,21 @@ CREATE TABLE `stadio` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `stadio`
+-- Dump dei dati per la tabella `Stadio`
 --
 
-INSERT INTO `stadio` (`codiceImpianto`, `nome`, `citta`, `via`, `numeroCivico`, `cap`, `capienzaMassima`, `annoCostruzione`, `tipologiaTerreno`) VALUES
-('ST01', 'Giuseppe Meazza', 'Milano', 'Via dei Piccolomini', '5', '20151', 80000, 1926, 'Erba Naturale'),
-('ST02', 'Allianz Stadium', 'Torino', 'Corso Gaetano Scirea', '50', '10151', 41500, 2011, 'Erba Ibrida');
+INSERT INTO `Stadio` (`codiceImpianto`, `nome`, `citta`, `via`, `numeroCivico`, `cap`, `capienzaMassima`, `annoCostruzione`, `tipologiaTerreno`) VALUES
+('STADIO_FI', 'Artemio Franchi', 'Firenze', 'Viale Manfredo Fanti', '4', '50137', 43147, 1931, 'Erba Naturale'),
+('STADIO_MI', 'Giuseppe Meazza', 'Milano', 'Via Piccolomini', '5', '20151', 75817, 1926, 'Ibrido'),
+('STADIO_TO', 'Allianz Stadium', 'Torino', 'Corso Gaetano Scirea', '50', '10151', 41507, 2011, 'Erba Naturale');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `torneo`
+-- Struttura della tabella `Torneo`
 --
 
-CREATE TABLE `torneo` (
+CREATE TABLE `Torneo` (
   `codiceCompetizione` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `stagioneSportiva` varchar(50) NOT NULL,
@@ -462,11 +462,11 @@ CREATE TABLE `torneo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `torneo`
+-- Dump dei dati per la tabella `Torneo`
 --
 
-INSERT INTO `torneo` (`codiceCompetizione`, `nome`, `stagioneSportiva`, `dataInizio`, `dataFine`, `formato`) VALUES
-('TOR26', 'Serie A Enilive', '2025/2026', '2025-08-23', '2026-05-31', 'Girone all\'italiana');
+INSERT INTO `Torneo` (`codiceCompetizione`, `nome`, `stagioneSportiva`, `dataInizio`, `dataFine`, `formato`) VALUES
+('SERIE_A_26', 'Serie A Enilive', '2025/2026', '2025-08-18', '2026-05-24', 'Girone all\'italiana');
 
 -- --------------------------------------------------------
 
@@ -499,7 +499,7 @@ CREATE TABLE `vistaclassificavittorie` (
 --
 DROP TABLE IF EXISTS `vistaaffluenzamediastadi`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vistaaffluenzamediastadi`  AS SELECT `s`.`codiceImpianto` AS `codiceImpianto`, `s`.`nome` AS `nome`, avg(`p`.`numeroSpettatori`) AS `mediaSpettatori` FROM (`stadio` `s` join `partita` `p` on(`s`.`codiceImpianto` = `p`.`codiceImpianto`)) GROUP BY `s`.`codiceImpianto`, `s`.`nome` ORDER BY avg(`p`.`numeroSpettatori`) DESC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vistaaffluenzamediastadi`  AS SELECT `s`.`codiceImpianto` AS `codiceImpianto`, `s`.`nome` AS `nome`, avg(`p`.`numeroSpettatori`) AS `mediaSpettatori` FROM (`stadio` `s` join `partita` `p` on(`s`.`codiceImpianto` = `p`.`codiceImpianto`)) GROUP BY `s`.`codiceImpianto`, `s`.`nome` ORDER BY avg(`p`.`numeroSpettatori`) AS `DESCdesc` ASC  ;
 
 -- --------------------------------------------------------
 
@@ -508,51 +508,51 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vistaclassificavittorie`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vistaclassificavittorie`  AS SELECT `s`.`codiceClub` AS `codiceClub`, `s`.`nome` AS `nome`, count(0) AS `numeroVittorie` FROM (`squadra` `s` join (select `partita`.`codiceSquadraCasa` AS `codiceSquadra` from `partita` where cast(substring_index(`partita`.`risultato`,'-',1) as unsigned) > cast(substring_index(`partita`.`risultato`,'-',-1) as unsigned) union all select `partita`.`codiceSquadraTrasferta` AS `codiceSquadra` from `partita` where cast(substring_index(`partita`.`risultato`,'-',-1) as unsigned) > cast(substring_index(`partita`.`risultato`,'-',1) as unsigned)) `vittorie` on(`s`.`codiceClub` = `vittorie`.`codiceSquadra`)) GROUP BY `s`.`codiceClub`, `s`.`nome` ORDER BY count(0) DESC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vistaclassificavittorie`  AS SELECT `s`.`codiceClub` AS `codiceClub`, `s`.`nome` AS `nome`, count(0) AS `numeroVittorie` FROM (`squadra` `s` join (select `partita`.`codiceSquadraCasa` AS `codiceSquadra` from `partita` where cast(substring_index(`partita`.`risultato`,'-',1) as unsigned) > cast(substring_index(`partita`.`risultato`,'-',-1) as unsigned) union all select `partita`.`codiceSquadraTrasferta` AS `codiceSquadra` from `partita` where cast(substring_index(`partita`.`risultato`,'-',-1) as unsigned) > cast(substring_index(`partita`.`risultato`,'-',1) as unsigned)) `Vittorie` on(`s`.`codiceClub` = `vittorie`.`codiceSquadra`)) GROUP BY `s`.`codiceClub`, `s`.`nome` ORDER BY count(0) AS `DESCdesc` ASC  ;
 
 --
 -- Indici per le tabelle scaricate
 --
 
 --
--- Indici per le tabelle `arbitro`
+-- Indici per le tabelle `Arbitro`
 --
-ALTER TABLE `arbitro`
+ALTER TABLE `Arbitro`
   ADD PRIMARY KEY (`numeroTesserinoArbitrale`);
 
 --
--- Indici per le tabelle `contratto`
+-- Indici per le tabelle `Contratto`
 --
-ALTER TABLE `contratto`
+ALTER TABLE `Contratto`
   ADD PRIMARY KEY (`idContratto`),
   ADD KEY `numeroTesseramentoGiocatore` (`numeroTesseramentoGiocatore`),
   ADD KEY `codiceClub` (`codiceClub`);
 
 --
--- Indici per le tabelle `designazione`
+-- Indici per le tabelle `Designazione`
 --
-ALTER TABLE `designazione`
+ALTER TABLE `Designazione`
   ADD PRIMARY KEY (`idDesignazione`),
   ADD KEY `numeroTesserinoArbitrale` (`numeroTesserinoArbitrale`),
   ADD KEY `codiceGara` (`codiceGara`);
 
 --
--- Indici per le tabelle `giocatore`
+-- Indici per le tabelle `Giocatore`
 --
-ALTER TABLE `giocatore`
+ALTER TABLE `Giocatore`
   ADD PRIMARY KEY (`numeroTesseramentoGiocatore`);
 
 --
--- Indici per le tabelle `partecipazione`
+-- Indici per le tabelle `Partecipazione`
 --
-ALTER TABLE `partecipazione`
+ALTER TABLE `Partecipazione`
   ADD PRIMARY KEY (`codiceClub`,`codiceCompetizione`),
   ADD KEY `codiceCompetizione` (`codiceCompetizione`);
 
 --
--- Indici per le tabelle `partita`
+-- Indici per le tabelle `Partita`
 --
-ALTER TABLE `partita`
+ALTER TABLE `Partita`
   ADD PRIMARY KEY (`codiceGara`),
   ADD KEY `codiceCompetizione` (`codiceCompetizione`),
   ADD KEY `codiceSquadraCasa` (`codiceSquadraCasa`),
@@ -560,36 +560,36 @@ ALTER TABLE `partita`
   ADD KEY `codiceImpianto` (`codiceImpianto`);
 
 --
--- Indici per le tabelle `prestazione`
+-- Indici per le tabelle `Prestazione`
 --
-ALTER TABLE `prestazione`
+ALTER TABLE `Prestazione`
   ADD PRIMARY KEY (`idPrestazione`),
   ADD UNIQUE KEY `numeroTesseramentoGiocatore` (`numeroTesseramentoGiocatore`,`codiceGara`),
   ADD KEY `codiceGara` (`codiceGara`);
 
 --
--- Indici per le tabelle `societa`
+-- Indici per le tabelle `Societa`
 --
-ALTER TABLE `societa`
+ALTER TABLE `Societa`
   ADD PRIMARY KEY (`codiceFederale`);
 
 --
--- Indici per le tabelle `squadra`
+-- Indici per le tabelle `Squadra`
 --
-ALTER TABLE `squadra`
+ALTER TABLE `Squadra`
   ADD PRIMARY KEY (`codiceClub`),
   ADD KEY `codiceSocieta` (`codiceSocieta`);
 
 --
--- Indici per le tabelle `stadio`
+-- Indici per le tabelle `Stadio`
 --
-ALTER TABLE `stadio`
+ALTER TABLE `Stadio`
   ADD PRIMARY KEY (`codiceImpianto`);
 
 --
--- Indici per le tabelle `torneo`
+-- Indici per le tabelle `Torneo`
 --
-ALTER TABLE `torneo`
+ALTER TABLE `Torneo`
   ADD PRIMARY KEY (`codiceCompetizione`);
 
 --
@@ -597,69 +597,69 @@ ALTER TABLE `torneo`
 --
 
 --
--- AUTO_INCREMENT per la tabella `contratto`
+-- AUTO_INCREMENT per la tabella `Contratto`
 --
-ALTER TABLE `contratto`
-  MODIFY `idContratto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `Contratto`
+  MODIFY `idContratto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `designazione`
+-- AUTO_INCREMENT per la tabella `Designazione`
 --
-ALTER TABLE `designazione`
-  MODIFY `idDesignazione` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+ALTER TABLE `Designazione`
+  MODIFY `idDesignazione` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT per la tabella `prestazione`
+-- AUTO_INCREMENT per la tabella `Prestazione`
 --
-ALTER TABLE `prestazione`
-  MODIFY `idPrestazione` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `Prestazione`
+  MODIFY `idPrestazione` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Limiti per le tabelle scaricate
 --
 
 --
--- Limiti per la tabella `contratto`
+-- Limiti per la tabella `Contratto`
 --
-ALTER TABLE `contratto`
-  ADD CONSTRAINT `contratto_ibfk_1` FOREIGN KEY (`numeroTesseramentoGiocatore`) REFERENCES `giocatore` (`numeroTesseramentoGiocatore`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `contratto_ibfk_2` FOREIGN KEY (`codiceClub`) REFERENCES `squadra` (`codiceClub`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Contratto`
+  ADD CONSTRAINT `contratto_ibfk_1` FOREIGN KEY (`numeroTesseramentoGiocatore`) REFERENCES `Giocatore` (`numeroTesseramentoGiocatore`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `contratto_ibfk_2` FOREIGN KEY (`codiceClub`) REFERENCES `Squadra` (`codiceClub`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `designazione`
+-- Limiti per la tabella `Designazione`
 --
-ALTER TABLE `designazione`
-  ADD CONSTRAINT `designazione_ibfk_1` FOREIGN KEY (`numeroTesserinoArbitrale`) REFERENCES `arbitro` (`numeroTesserinoArbitrale`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `designazione_ibfk_2` FOREIGN KEY (`codiceGara`) REFERENCES `partita` (`codiceGara`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Designazione`
+  ADD CONSTRAINT `designazione_ibfk_1` FOREIGN KEY (`numeroTesserinoArbitrale`) REFERENCES `Arbitro` (`numeroTesserinoArbitrale`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `designazione_ibfk_2` FOREIGN KEY (`codiceGara`) REFERENCES `Partita` (`codiceGara`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `partecipazione`
+-- Limiti per la tabella `Partecipazione`
 --
-ALTER TABLE `partecipazione`
-  ADD CONSTRAINT `partecipazione_ibfk_1` FOREIGN KEY (`codiceClub`) REFERENCES `squadra` (`codiceClub`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `partecipazione_ibfk_2` FOREIGN KEY (`codiceCompetizione`) REFERENCES `torneo` (`codiceCompetizione`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Partecipazione`
+  ADD CONSTRAINT `partecipazione_ibfk_1` FOREIGN KEY (`codiceClub`) REFERENCES `Squadra` (`codiceClub`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `partecipazione_ibfk_2` FOREIGN KEY (`codiceCompetizione`) REFERENCES `Torneo` (`codiceCompetizione`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `partita`
+-- Limiti per la tabella `Partita`
 --
-ALTER TABLE `partita`
-  ADD CONSTRAINT `partita_ibfk_1` FOREIGN KEY (`codiceCompetizione`) REFERENCES `torneo` (`codiceCompetizione`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `partita_ibfk_2` FOREIGN KEY (`codiceSquadraCasa`) REFERENCES `squadra` (`codiceClub`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `partita_ibfk_3` FOREIGN KEY (`codiceSquadraTrasferta`) REFERENCES `squadra` (`codiceClub`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `partita_ibfk_4` FOREIGN KEY (`codiceImpianto`) REFERENCES `stadio` (`codiceImpianto`) ON UPDATE CASCADE;
+ALTER TABLE `Partita`
+  ADD CONSTRAINT `partita_ibfk_1` FOREIGN KEY (`codiceCompetizione`) REFERENCES `Torneo` (`codiceCompetizione`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `partita_ibfk_2` FOREIGN KEY (`codiceSquadraCasa`) REFERENCES `Squadra` (`codiceClub`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `partita_ibfk_3` FOREIGN KEY (`codiceSquadraTrasferta`) REFERENCES `Squadra` (`codiceClub`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `partita_ibfk_4` FOREIGN KEY (`codiceImpianto`) REFERENCES `Stadio` (`codiceImpianto`) ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `prestazione`
+-- Limiti per la tabella `Prestazione`
 --
-ALTER TABLE `prestazione`
-  ADD CONSTRAINT `prestazione_ibfk_1` FOREIGN KEY (`numeroTesseramentoGiocatore`) REFERENCES `giocatore` (`numeroTesseramentoGiocatore`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `prestazione_ibfk_2` FOREIGN KEY (`codiceGara`) REFERENCES `partita` (`codiceGara`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Prestazione`
+  ADD CONSTRAINT `prestazione_ibfk_1` FOREIGN KEY (`numeroTesseramentoGiocatore`) REFERENCES `Giocatore` (`numeroTesseramentoGiocatore`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `prestazione_ibfk_2` FOREIGN KEY (`codiceGara`) REFERENCES `Partita` (`codiceGara`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `squadra`
+-- Limiti per la tabella `Squadra`
 --
-ALTER TABLE `squadra`
-  ADD CONSTRAINT `squadra_ibfk_1` FOREIGN KEY (`codiceSocieta`) REFERENCES `societa` (`codiceFederale`) ON UPDATE CASCADE;
+ALTER TABLE `Squadra`
+  ADD CONSTRAINT `squadra_ibfk_1` FOREIGN KEY (`codiceSocieta`) REFERENCES `Societa` (`codiceFederale`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
