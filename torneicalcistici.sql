@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Mag 22, 2026 alle 16:34
+-- Creato il: Mag 22, 2026 alle 16:38
 -- Versione del server: 10.4.27-MariaDB
 -- Versione PHP: 8.0.25
 
@@ -466,7 +466,7 @@ CREATE TABLE `Torneo` (
 --
 
 INSERT INTO `Torneo` (`codiceCompetizione`, `nome`, `stagioneSportiva`, `dataInizio`, `dataFine`, `formato`) VALUES
-('SERIE_A_26', 'Serie A Enilive', '2025/2026', '2025-08-18', '2026-05-24', 'Girone all\'italiana');
+('SERIE_A_26', 'Serie A Enilive', '2025/2026', '2025-08-18', '2026-05-24', 'Campionato');
 
 -- --------------------------------------------------------
 
